@@ -1,0 +1,6 @@
+# 2025 tvyiutnhisokewt
+
+# Required makefiles. Also hard include pif.mk to avoid null pihook variables.
+include vendor/tvyiutnhisokewt/configs/makefile/vars.mk
+include vendor/tvyiutnhisokewt/configs/makefile/props.mk
+include vendor/tvyiutnhisokewt/configs/makefile/pif.mk
