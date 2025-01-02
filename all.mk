@@ -4,3 +4,5 @@
 include vendor/tvyiutnhisokewt/configs/makefile/vars.mk
 include vendor/tvyiutnhisokewt/configs/makefile/props.mk
 include vendor/tvyiutnhisokewt/configs/makefile/pif.mk
+include vendor/tvyiutnhisokewt/configs/makefile/fonts.mk
+
