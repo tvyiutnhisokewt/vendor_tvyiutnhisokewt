@@ -75,7 +75,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.storage_manager.enabled=false
 
 # Inherit from audio config
-$(call inherit-product, vendor/pixel-style/config/audio.mk)
+$(call inherit-product, vendor/tvyiutnhisokewt/pixel-style/config/audio.mk)
 
 # Inherit from rro_overlays config
-$(call inherit-product, vendor/pixel-style/config/rro_overlays.mk)
+$(call inherit-product, vendor/tvyiutnhisokewt/pixel-style/config/rro_overlays.mk)
