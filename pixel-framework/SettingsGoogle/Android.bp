@@ -1,0 +1,92 @@
+// Opt-out config for optimizing the SettingsGoogle target using R8.
+// Disabled via `export SETTINGS_OPTIMIZE_JAVA=false`, or explicitly in Make via
+// `SETTINGS_OPTIMIZE_JAVA := false`.
+soong_config_module_type {
+    name: "settingsgoogle_optimized_java_defaults",
+    module_type: "java_defaults",
+    config_namespace: "ANDROID",
+    bool_variables: ["SETTINGS_OPTIMIZE_JAVA"],
+    properties: ["optimize"],
+}
+
+settingsgoogle_optimized_java_defaults {
+    name: "SettingsGoogle_optimized_defaults",
+    soong_config_variables: {
+        SETTINGS_OPTIMIZE_JAVA: {
+            optimize: {
+                enabled: true,
+                optimize: true,
+                shrink: true,
+                shrink_resources: false,
+                ignore_warnings: true,
+                proguard_compatibility: true,
+            },
+            conditions_default: {
+                optimize: {
+                    ignore_warnings: true,
+                    proguard_compatibility: true,
+                },
+            },
+        },
+    },
+}
+
+android_library {
+    name: "SettingsGoogle-core",
+    platform_apis: true,
+
+    srcs: ["src/**/*.java"],
+    
+    use_resource_processor: true,
+    static_libs: [
+        "Settings-core",
+        "android.hidl.base-V1.0-java",
+        "android.frameworks.stats-V1-java",
+        "vendor-pixelatoms-java",
+        "SettingsGoogle-lib",
+    ],
+    resource_dirs: [
+        "res",
+    ],
+    manifest: ":Settings_manifest",
+}
+
+android_app {
+    name: "SettingsGoogle",
+    defaults: [
+        "platform_app_defaults",
+        "SettingsGoogle_optimized_defaults",
+    ],
+    platform_apis: true,
+    certificate: "platform",
+    system_ext_specific: true,
+    privileged: true,
+    required: [
+        "privapp_whitelist_com.android.settings",
+        "settings-platform-compat-config",
+    ],
+    static_libs: ["SettingsGoogle-core"],
+    uses_libs: ["org.apache.http.legacy"],
+    optimize: {
+        proguard_flags_files: [
+            ":Settings_proguard_flags",
+            "proguard.flags",
+        ],
+    },
+    overrides: [
+        "Settings",
+    ],
+    manifest: ":Settings_manifest",
+    additional_manifests: ["AndroidManifest.xml"],
+}
+
+java_import  {
+    name: "SettingsGoogle-lib",
+    sdk_version: "current",
+    jars: ["libs/SettingsGoogle-lib.jar"],
+}
+
+filegroup {
+    name: "SettingsGoogle_manifest",
+    srcs: ["AndroidManifest.xml"],
+}

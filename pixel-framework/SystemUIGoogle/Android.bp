@@ -1,0 +1,84 @@
+android_library {
+    name: "SystemUIGoogle-core",
+    srcs: [
+        "src/**/*.kt",
+        "src/**/*.java",
+        "src/**/*.aidl",
+    ],
+    resource_dirs: [
+        "res",
+    ],
+    static_libs: [
+        "SystemUI-core",
+        "tensorflowlite_java",
+        "android.frameworks.stats-V1-java",
+        "vendor-pixelatoms-java",
+        "smartspace-proto-java",
+        "guava",
+        "googlebattery-lib",
+        "google-battery",
+        "vendor.google.google_battery-V1-java",
+        "matchmaker-lib",
+        "touchcontext-lib",
+        "nga-lib",
+        "elmyra-lib",
+        "columbus-lib",
+        "androidx.concurrent_concurrent-futures-ktx",
+    ],
+    libs: [
+        "keepanno-annotations",
+    ],
+    manifest: "AndroidManifest.xml",
+    kotlincflags: ["-Xjvm-default=all"],
+    plugins: ["dagger2-compiler"],
+    lint: {
+        extra_check_modules: ["SystemUILintChecker"],
+    },
+}
+
+android_app {
+    name: "SystemUIGoogle",
+    defaults: [
+        "platform_app_defaults",
+    ],
+    static_libs: [
+        "SystemUIGoogle-core",
+    ],
+    libs: [
+        "ims-common",
+    ],
+    jni_libs: ["libtensorflowlite_jni"],
+    use_embedded_native_libs: true,
+    overrides: [
+        "SystemUI",
+    ],
+    resource_dirs: [],
+    asset_dirs: ["assets"],
+    aaptflags: [
+        "-0 .tflite",
+        "-0 .vocab",
+    ],
+
+    platform_apis: true,
+    system_ext_specific: true,
+    certificate: "platform",
+    privileged: true,
+
+    kotlincflags: ["-Xjvm-default=all"],
+
+    dxflags: ["--multi-dex"],
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+    required: [
+        "privapp_whitelist_com.android.systemui",
+    ],
+}
+
+java_library {
+    name: "google-battery",
+    srcs: ["googlebattery/src/**/*.java"],
+    static_libs: [
+        "vendor.google.google_battery-V1-java",
+    ],
+}
